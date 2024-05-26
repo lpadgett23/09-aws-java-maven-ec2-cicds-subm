@@ -22,7 +22,10 @@ pipeline {
         stage("deploy") {
             steps {
                 script {
-                    echo "Deploying the application..."
+                    sshagent(['ec2-server-ssh-key']) {
+                        def dockerCmd = 'docker run -p 3080:3080 -d lepcloud23/demo-app:1.0'
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.232.67.153 ${dockerCmd}"
+                    }
                 }
             }
         }               
