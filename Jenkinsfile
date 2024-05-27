@@ -13,7 +13,7 @@ pipeline {
         maven 'maven-3.9'
     }
     environment {
-        IMAGE_NAME = 'lepcloud23/demo-app:java-maven-app-5.0'
+        IMAGE_NAME = 'lepcloud23/demo-app:java-maven-app-aws-5.0'
     }
     stages {
         stage('build app') {
@@ -37,7 +37,7 @@ pipeline {
                 script {
                     echo 'deploying docker image to EC2...'
                     def dockerCmd = "docker run -p 8080:8080 -d ${IMAGE_NAME}"
-                    sshagent(['ec2-server-key']) {
+                    sshagent(['ec2-server-ssh-key']) {
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@18.232.67.153 ${dockerCmd}"
                     }
                 }

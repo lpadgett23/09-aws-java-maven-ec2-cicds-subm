@@ -5,4 +5,4 @@ EXPOSE 8080
 COPY ./target/java-maven-app-*.jar /usr/app/
 WORKDIR /usr/app
 
-ENTRYPOINT ["java", "-jar", "java-maven-app-5.0.jar"]
+ENTRYPOINT ["java", "-jar", "java-maven-app-aws-5.0.jar"]
