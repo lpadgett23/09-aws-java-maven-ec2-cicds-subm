@@ -1,4 +1,12 @@
 version: '3.8'
 services:
     java-maven-app: 
-      image: 
+      image: lepcloud23/demo-app:java-maven-app-aws-5.1
+      ports:
+        - 8080:8080
+    postgres15:
+      image: postgres:15
+      ports:
+        - 5432:5432
+      environment:
+        - POSTGRES_PASSWORD=my-pwd
