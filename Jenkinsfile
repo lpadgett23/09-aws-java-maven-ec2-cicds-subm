@@ -49,7 +49,7 @@ pipeline {
                 script {
                     echo 'deploying docker image to EC2 with docker-compose up...'
 
-                    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
+                    def shellCmd = "bash ./server-cmds.sh aws-${IMAGE_NAME}"
                     def ec2Instance = "ec2-user@18.232.67.153"
                     
                     sshagent(['ec2-server-ssh-key']) {   
