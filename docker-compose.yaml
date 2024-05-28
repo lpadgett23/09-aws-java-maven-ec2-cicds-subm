@@ -1,7 +1,7 @@
 version: '3.8'
 services:
     java-maven-app: 
-      image: lepcloud23/demo-app:java-maven-app-aws-5.2
+      image: ${IMAGE}
       ports:
         - 8080:8080
     postgres15:
