@@ -13,7 +13,7 @@ pipeline {
         maven 'maven-3.9'
     }
     environment {
-        IMAGE_NAME = 'lepcloud23/demo-app:java-maven-app-aws-5.1'
+        IMAGE_NAME = 'lepcloud23/demo-app:java-maven-app-aws-5.2'
     }
     stages {
         stage('build app') {
@@ -36,10 +36,13 @@ pipeline {
             steps {
                 script {
                     echo 'deploying docker image to EC2 with docker-compose up...'
-                    def dockerComposeCmd = "docker-compose -f docker-compose.yaml up --detach"
+                    def shellCmd = "bash ./server-cmds.sh"
                     sshagent(['ec2-server-ssh-key']) {
-                        sh "scp docker-compose.yaml ec2-user@18.232.67.153:/home/ec2-user"  // jenkins is holding the checked out repo directory right now
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.232.67.153 ${dockerComposeCmd}"
+                        
+                        sh "scp -v -o StrictHostKeyChecking=no server-cmds.sh ec2-user@18.232.67.153:/home/ec2-user"
+                        sh "scp -v -o StrictHostKeyChecking=no docker-compose.yaml ec2-user@18.232.67.153:/home/ec2-user"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.232.67.153 'ls -l /home/ec2-user/docker-compose.yaml'" 
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.232.67.153 ${shellCmd}"
                     }
                 }
             }               
