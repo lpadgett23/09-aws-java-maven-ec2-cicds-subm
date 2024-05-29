@@ -18,11 +18,11 @@ pipeline {
                 script {
                     echo 'incrementing version of app...'
                     sh 'mvn build-helper:parse-version versions:set \
-                        -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.nextMinorVersion} \
+                        -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.MinorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
                         versions:commit'
                     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
                     def version = matcher[0][1]
-                    env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+                    env.IMAGE_NAME = "aws-$version-$BUILD_NUMBER"
                 }
             }
         }
@@ -37,9 +37,9 @@ pipeline {
                 script {
                     echo "building the docker image..."
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh "docker build -t lepcloud23/demo-app:aws-${IMAGE_NAME} ."
+                        sh "docker build -t lepcloud23/demo-app:${IMAGE_NAME} ."
                         sh 'echo $PASS | docker login -u $USER --password-stdin'
-                        sh "docker push lepcloud23/demo-app:aws-${IMAGE_NAME}"
+                        sh "docker push lepcloud23/demo-app:${IMAGE_NAME}"
                     }
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
                 script {
                     echo 'deploying docker image to EC2 with docker-compose up...'
 
-                    def shellCmd = "bash ./server-cmds.sh aws-${IMAGE_NAME}"
+                    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
                     def ec2Instance = "ec2-user@18.232.67.153"
                     
                     sshagent(['ec2-server-ssh-key']) {   

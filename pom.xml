@@ -6,7 +6,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>java-maven-app</artifactId>
-    <version>aws-5.5</version>
+    <version>5.6</version>
 
     <build>
         <plugins>
