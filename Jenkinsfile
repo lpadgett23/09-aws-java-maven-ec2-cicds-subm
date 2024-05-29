@@ -71,7 +71,7 @@ pipeline {
                         sh "git remote set-url origin https://${USER}:${TOKEN}@github.com/lpadgett23/09-aws-java-maven-ec2-cicds-subm.git"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
-                        sh 'git push origin HEAD:jenkins-jobs/2-docker-compose-ec2-full-cicds'
+                        sh "git push origin HEAD:jenkins-jobs/2-docker-compose-ec2-full-cicds"
                         
                 }
             }               
