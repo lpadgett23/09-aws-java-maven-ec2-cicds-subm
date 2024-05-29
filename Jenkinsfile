@@ -65,7 +65,7 @@ pipeline {
         stage("commit version update") {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'github-token-jenkins-2', variable: 'TOKEN'), usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')])
+                    withCredentials([string(credentialsId: 'github-token-jenkins-2', variable: 'TOKEN'), usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                         sh 'git status'
                         sh 'git branch'
                         sh 'git config --list'
@@ -73,7 +73,7 @@ pipeline {
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
                         sh "git push origin HEAD:jenkins-jobs/2-docker-compose-ec2-full-cicds"
-                        
+                    }   
                 }
             }               
         }
